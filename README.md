@@ -10,6 +10,7 @@
 
 - [特性](#特性)
 - [安装](#安装)
+- [Codex / Claude Code skill 和 plugin](#codex--claude-code-skill-和-plugin)
 - [前置条件](#前置条件)
 - [快速开始](#快速开始)
 - [命令](#命令)
@@ -52,6 +53,56 @@ cd aix
 npm install
 npm run build
 node dist/cli.js --help
+```
+
+## Codex / Claude Code skill 和 plugin
+
+`npm install -g aix-handoff` 只安装 `aix` CLI，不会自动把 Codex 或 Claude Code 的 skill 安装到你的个人配置里。
+
+Codex 的标准 skill 目录是 `.agents/skills/<skill-name>/SKILL.md` 或用户级 `~/.agents/skills/<skill-name>/SKILL.md`。本仓库提供的 repo-local skill 是：
+
+```text
+.agents/skills/aix-send/SKILL.md
+```
+
+如果你在 Codex 里打开这个仓库，可以通过 `/skills` 选择 `aix-send`，也可以显式提到 `$aix-send`。安装为插件后，也可以直接说：
+
+```text
+用 aix 把当前 Codex 会话发到 dkqdev
+```
+
+面向复用分发时，Codex 推荐用 plugin，而不是把一个裸 skill 文件夹塞进任意目录。本仓库的 Codex plugin 位于：
+
+```text
+plugins/aix/.codex-plugin/plugin.json
+plugins/aix/skills/aix-send/SKILL.md
+.agents/plugins/marketplace.json
+```
+
+Claude Code 的项目级 skill 目录是 `.claude/skills/<skill-name>/SKILL.md`。本仓库提供的 Claude Code skill 是：
+
+```text
+.claude/skills/aix-send/SKILL.md
+```
+
+作为项目级 skill 时，可在 Claude Code 里用 slash command 触发：
+
+```text
+/aix-send dkqdev
+```
+
+Claude Code 的 plugin 分发入口是：
+
+```text
+.claude-plugin/marketplace.json
+plugins/aix/.claude-plugin/plugin.json
+plugins/aix/skills/aix-send/SKILL.md
+```
+
+作为已安装 plugin 的 skill 时，Claude Code 使用命名空间触发：
+
+```text
+/aix:aix-send dkqdev
 ```
 
 ## 前置条件
@@ -224,6 +275,52 @@ The npm package name is `aix-handoff`; the installed binary is `aix`.
 ```bash
 npm install -g aix-handoff
 aix --help
+```
+
+### Codex / Claude Code Skill and Plugin
+
+The npm package installs the `aix` CLI only. It does not automatically install Codex or Claude Code skills.
+
+The repo-local Codex skill is:
+
+```text
+.agents/skills/aix-send/SKILL.md
+```
+
+For reusable Codex distribution, this repository also includes a plugin and marketplace entry:
+
+```text
+plugins/aix/.codex-plugin/plugin.json
+plugins/aix/skills/aix-send/SKILL.md
+.agents/plugins/marketplace.json
+```
+
+After the skill or plugin is available in Codex, trigger it explicitly with `$aix-send` or `/skills`, or ask Codex to hand off the current session with `aix`.
+
+The repo-local Claude Code skill is:
+
+```text
+.claude/skills/aix-send/SKILL.md
+```
+
+After the project skill is available in Claude Code, trigger it with:
+
+```text
+/aix-send dkqdev
+```
+
+The Claude Code plugin entry is:
+
+```text
+.claude-plugin/marketplace.json
+plugins/aix/.claude-plugin/plugin.json
+plugins/aix/skills/aix-send/SKILL.md
+```
+
+After the plugin is installed, Claude Code uses the plugin namespace:
+
+```text
+/aix:aix-send dkqdev
 ```
 
 ### Requirements

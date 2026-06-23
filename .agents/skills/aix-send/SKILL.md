@@ -1,6 +1,6 @@
 ---
 name: aix-send
-description: "Move the current Codex session and workspace to a remote aix tmux workspace."
+description: "Hand off the current Codex session and workspace to a remote aix tmux workspace. Use when the user asks to send, move, migrate, resume, or continue a Codex task on an SSH target."
 ---
 
 # aix-send

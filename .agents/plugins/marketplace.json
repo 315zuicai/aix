@@ -1,0 +1,20 @@
+{
+  "name": "aix",
+  "interface": {
+    "displayName": "aix"
+  },
+  "plugins": [
+    {
+      "name": "aix",
+      "source": {
+        "source": "local",
+        "path": "./plugins/aix"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

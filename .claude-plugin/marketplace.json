@@ -1,0 +1,17 @@
+{
+  "name": "aix",
+  "description": "AI execution handoff plugins for Claude Code.",
+  "owner": {
+    "name": "315zuicai"
+  },
+  "plugins": [
+    {
+      "name": "aix",
+      "source": "./plugins/aix",
+      "description": "AI execution handoff workflows for Claude Code.",
+      "author": {
+        "name": "315zuicai"
+      }
+    }
+  ]
+}

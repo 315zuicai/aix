@@ -1,0 +1,18 @@
+{
+  "name": "aix",
+  "version": "0.1.2",
+  "description": "AI execution handoff workflows for Codex.",
+  "author": {
+    "name": "315zuicai"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "aix",
+    "shortDescription": "Hand off Codex sessions to remote tmux workspaces.",
+    "longDescription": "aix moves the current Codex session and workspace snapshot to a remote SSH target and resumes it inside tmux.",
+    "developerName": "315zuicai",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Use aix to hand off this Codex session to a remote SSH target."
+  }
+}

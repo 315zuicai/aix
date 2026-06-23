@@ -1,0 +1,11 @@
+{
+  "name": "aix",
+  "description": "AI execution handoff workflows for Claude Code.",
+  "version": "0.1.2",
+  "author": {
+    "name": "315zuicai"
+  },
+  "repository": "https://github.com/315zuicai/aix",
+  "homepage": "https://github.com/315zuicai/aix",
+  "license": "MIT"
+}

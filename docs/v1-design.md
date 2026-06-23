@@ -162,4 +162,4 @@ cd <target-workspace> && claude --resume <session-id> --fork-session
 5. Install Claude sessions remotely.
 6. Start remote tmux and print attach command.
 7. Add `aix attach`, `aix status`, `aix list`.
-8. Add Codex skill and Claude slash command wrappers.
+8. Add repo-local and plugin-packaged skills for Codex and Claude Code.

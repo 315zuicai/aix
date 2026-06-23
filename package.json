@@ -18,7 +18,10 @@
     "dist",
     "README.md",
     "docs",
-    "wrappers"
+    ".agents",
+    ".claude",
+    ".claude-plugin",
+    "plugins"
   ],
   "publishConfig": {
     "access": "public",
