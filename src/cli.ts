@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { createRequire } from "node:module";
 import { Command, Option } from "commander";
 import { attachCommand } from "./commands/attach.js";
 import { doctorCommand } from "./commands/doctor.js";
@@ -7,12 +8,15 @@ import { sendCommand } from "./commands/send.js";
 import { statusCommand } from "./commands/status.js";
 import type { ToolName } from "./core/types.js";
 
+const require = createRequire(import.meta.url);
+const packageJson = require("../package.json") as { version: string };
+
 const program = new Command();
 
 program
   .name("aix")
   .description("Move local Codex and Claude Code sessions to long-running remote tmux workspaces.")
-  .version("0.1.0");
+  .version(packageJson.version);
 
 program
   .command("doctor")

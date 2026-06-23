@@ -2,21 +2,28 @@ name: Publish to npm
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
   workflow_dispatch:
 
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    if: github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'chore(release):')
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -37,11 +44,74 @@ jobs:
       - name: Typecheck
         run: npm run check
 
+      - name: Plan release version
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          latest="$(npm view aix-handoff version --registry=https://registry.npmjs.org/ 2>/dev/null || echo "0.0.0")"
+          current="$(node -p "require('./package.json').version")"
+          node - "$latest" "$current" >> "$GITHUB_OUTPUT" <<'NODE'
+          const [latest, current] = process.argv.slice(2);
+
+          function parseVersion(version) {
+            const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
+            if (!match) {
+              throw new Error(`unsupported semver version: ${version}`);
+            }
+            return match.slice(1).map(Number);
+          }
+
+          function compareVersions(left, right) {
+            const a = parseVersion(left);
+            const b = parseVersion(right);
+            for (let index = 0; index < 3; index += 1) {
+              if (a[index] !== b[index]) {
+                return a[index] - b[index];
+              }
+            }
+            return 0;
+          }
+
+          function bumpPatch(version) {
+            const [major, minor, patch] = parseVersion(version);
+            return `${major}.${minor}.${patch + 1}`;
+          }
+
+          const next = compareVersions(current, latest) > 0 ? current : bumpPatch(latest);
+          console.log(`version=${next}`);
+          console.log(`tag=v${next}`);
+          console.log(`needs_bump=${next === current ? "false" : "true"}`);
+          NODE
+
+      - name: Bump package version
+        if: steps.release.outputs.needs_bump == 'true'
+        run: npm version "${{ steps.release.outputs.version }}" --no-git-tag-version
+
       - name: Build
         run: npm run build
 
       - name: Verify package contents
         run: npm pack --dry-run --json
+
+      - name: Commit release version
+        if: steps.release.outputs.needs_bump == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "chore(release): ${{ steps.release.outputs.tag }}"
+          git tag "${{ steps.release.outputs.tag }}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git push origin "${{ steps.release.outputs.tag }}"
+
+      - name: Ensure release tag exists
+        if: steps.release.outputs.needs_bump == 'false'
+        run: |
+          if ! git rev-parse -q --verify "refs/tags/${{ steps.release.outputs.tag }}" >/dev/null; then
+            git tag "${{ steps.release.outputs.tag }}"
+            git push origin "${{ steps.release.outputs.tag }}"
+          fi
 
       - name: Publish
         run: npm publish --access public --provenance

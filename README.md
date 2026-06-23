@@ -168,11 +168,10 @@ aix send dkqdev --tool codex --prompt-file ./handoff-prompt.txt
 
 ## 发布到 npm
 
-这个项目可以通过 GitHub Actions 自动发布到 npm。推荐发布边界是 git tag，而不是每次 push 到 `main` 都发布：
+这个项目通过 GitHub Actions 自动发布到 npm。正常流程不需要本地执行 `npm version`，也不需要手动创建 tag：
 
 ```bash
-npm version patch
-git push origin main --follow-tags
+git push origin main
 ```
 
 推荐使用 npm Trusted Publishing。它通过 GitHub Actions 的 OIDC 身份发布，不需要在 GitHub Secrets 里长期保存 `NPM_TOKEN`。
@@ -183,9 +182,9 @@ npm Trusted Publishing 要求 GitHub-hosted runner、Node.js `>=22.14.0`、npm C
 
 1. 在 npmjs.com 创建或拥有 `aix-handoff` 包名。
 2. 在 npm 包设置里配置 Trusted Publisher，绑定这个 GitHub 仓库和 workflow。
-3. 推送 `v*` tag，例如 `v0.1.0`。
+3. 推送到 `main`。
 
-本仓库包含 `.github/workflows/publish.yml`，tag 推送后会运行测试、类型检查、构建、打包 dry-run，然后执行：
+本仓库包含 `.github/workflows/publish.yml`。每次 `main` 更新后，它会运行测试、类型检查、自动递增 patch 版本、写回 `package.json` / `package-lock.json`、创建 `v*` tag、构建、打包 dry-run，然后执行：
 
 ```bash
 npm publish --access public --provenance
@@ -275,14 +274,13 @@ aix send dkqdev --tool claude --session <session-id>
 
 ### Release
 
-The recommended npm release path is GitHub Actions plus npm Trusted Publishing. Publish on version tags, not every push to `main`:
+The npm release path is fully automated through GitHub Actions plus npm Trusted Publishing. A push to `main` runs tests, bumps the patch version, writes the release commit and tag, then publishes to npm:
 
 ```bash
-npm version patch
-git push origin main --follow-tags
+git push origin main
 ```
 
-The included `.github/workflows/publish.yml` runs tests, typecheck, build, pack dry-run, then publishes to npm.
+The included `.github/workflows/publish.yml` publishes with npm provenance and does not require a long-lived `NPM_TOKEN` secret.
 
 ## License
 
