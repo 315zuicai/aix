@@ -4,7 +4,7 @@
   "description": "Move local Codex and Claude Code sessions to long-running remote tmux workspaces.",
   "type": "module",
   "bin": {
-    "aix": "./dist/cli.js"
+    "aix": "dist/cli.js"
   },
   "files": [
     "dist",

@@ -191,7 +191,11 @@ npm Trusted Publishing 要求 GitHub-hosted runner、Node.js `>=22.14.0`、npm C
 npm publish --access public --provenance
 ```
 
-如果首次发布时 npm 还不能为未发布包配置 Trusted Publisher，可以先手动发布一次，或临时使用 npm automation token bootstrap；后续建议切回 Trusted Publishing。
+如果首次发布时 npm 还不能为未发布包配置 Trusted Publisher，可以先手动发布一次，或临时使用带 publish 权限并允许 bypass 2FA 的 npm granular token bootstrap；后续建议切回 Trusted Publishing。账号开启 2FA 时，普通登录态发布会要求 OTP：
+
+```bash
+npm publish --access public --registry=https://registry.npmjs.org/ --otp <one-time-code>
+```
 
 ## 开发
 
