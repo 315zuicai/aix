@@ -41,7 +41,7 @@ aix --help
 也可以直接使用 `npx`：
 
 ```bash
-npx aix-handoff --help
+npx --package aix-handoff aix --help
 ```
 
 本地开发版本：
