@@ -1,6 +1,6 @@
 {
   "name": "aix-handoff",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Move local Codex and Claude Code sessions to long-running remote tmux workspaces.",
   "repository": {
     "type": "git",
