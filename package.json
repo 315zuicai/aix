@@ -2,6 +2,14 @@
   "name": "aix-handoff",
   "version": "0.1.1",
   "description": "Move local Codex and Claude Code sessions to long-running remote tmux workspaces.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/315zuicai/aix.git"
+  },
+  "bugs": {
+    "url": "https://github.com/315zuicai/aix/issues"
+  },
+  "homepage": "https://github.com/315zuicai/aix#readme",
   "type": "module",
   "bin": {
     "aix": "dist/cli.js"
