@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.aix/
+*.log
+.DS_Store

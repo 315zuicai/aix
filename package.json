@@ -1,0 +1,48 @@
+{
+  "name": "aix-handoff",
+  "version": "0.1.0",
+  "description": "Move local Codex and Claude Code sessions to long-running remote tmux workspaces.",
+  "type": "module",
+  "bin": {
+    "aix": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "docs",
+    "wrappers"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsx src/cli.ts",
+    "doctor": "tsx src/cli.ts doctor",
+    "send": "tsx src/cli.ts send",
+    "test": "node --import tsx --test test/**/*.test.ts",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "codex",
+    "claude-code",
+    "tmux",
+    "handoff",
+    "ssh",
+    "rsync"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^14.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
